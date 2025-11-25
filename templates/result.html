@@ -1,0 +1,188 @@
+<!-- templates/result.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Analysis Complete — Fraud Detection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-wrap">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="hero-icon" aria-hidden="true">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#60a5fa"/></linearGradient></defs>
+            <path d="M12 2l7 3v5c0 5-3.8 9.6-7 12-3.2-2.4-7-7-7-12V5l7-3z" stroke="url(#g1)" stroke-width="1.4" fill="none"/>
+          </svg>
+        </div>
+
+        <div class="hero-text">
+          <h1 class="gradient-text">Analysis Complete</h1>
+          <p class="hero-sub muted">Transaction analysis results based on ML model prediction</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="results-page">
+
+      <!-- STATUS CARD -->
+      <section class="result-card {{ res.label_class }}">
+        <div class="result-card-inner">
+
+          <div class="result-top">
+            <div class="status-left">
+              <span class="status-icon">✔</span>
+              <h3 class="status-title">
+                {% if res.label_text == 'LOW' %}
+                  Transaction Appears Safe
+                {% elif res.label_text == 'MEDIUM' %}
+                  Review Recommended
+                {% else %}
+                  Potential Fraud Detected
+                {% endif %}
+              </h3>
+            </div>
+
+            <div class="status-right">
+              <div class="big-pct">{{ (res.pct) | round(0) }}%</div>
+            </div>
+          </div>
+
+          <!-- progress bar -->
+          <div class="progress-row">
+            <div class="progress-label">Fraud Probability</div>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg" aria-hidden="true">
+                <div class="progress-bar-fill" data-pct="{{ res.pct }}"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <div class="meta-item">
+              <div class="meta-title">Detection Threshold</div>
+              <div class="meta-value">
+                {% if res.threshold <= 1 %}
+                  {{ (res.threshold * 100) | round(0) }}%
+                {% else %}
+                  {{ res.threshold }}%
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="meta-item" style="text-align:center">
+              <div class="meta-title">Risk Level</div>
+              <div class="meta-value risk-pill {{ res.label_class }}">{{ res.label_text }}</div>
+            </div>
+
+            <div class="meta-item" style="text-align:right">
+              <div class="meta-title"> </div>
+              <div class="meta-value"> </div>
+            </div>
+          </div>
+
+          <div class="recommendation">
+            <div class="rec-header">Recommendation</div>
+            <div class="rec-body">
+              {% if res.label_text == 'LOW' %}
+                This transaction appears legitimate based on the analyzed patterns. Continue monitoring for any unusual follow-up activities.
+              {% elif res.label_text == 'MEDIUM' %}
+                The transaction contains suspicious signals. Consider verifying the destination account and monitoring for further activity.
+              {% else %}
+                High risk detected — block or hold the transaction and escalate to fraud operations for immediate investigation.
+              {% endif %}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- DETAILS CARD: enhanced layout to match mockup -->
+      <section class="details-card details-card--styled">
+        <div class="details-inner">
+          <h3>Transaction Details</h3>
+
+          <div class="details-table">
+
+            <!-- Row 1 -->
+            <div class="details-row">
+              <div class="left-key">Type</div>
+              <div class="left-val center-bold">{{ res.input.type }}</div>
+
+              <div class="right-key">Origin Old Balance</div>
+              <div class="right-val right-bold">$ {{ "{:,.0f}".format(res.input.oldbalanceOrg) }}</div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="details-row">
+              <div class="left-key">Amount</div>
+              <div class="left-val center-bold">$ {{ "{:,.0f}".format(res.input.amount) }}</div>
+
+              <div class="right-key">Origin New Balance</div>
+              <div class="right-val right-bold">$ {{ "{:,.0f}".format(res.input.newbalanceOrig) }}</div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="details-row">
+              <div class="left-key">Origin Account</div>
+              <div class="left-val center-bold small-muted">{{ res.input.origin_account or '—' }}</div>
+
+              <div class="right-key">Dest. Old Balance</div>
+              <div class="right-val right-bold">$ {{ "{:,.0f}".format(res.input.oldbalanceDest) }}</div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="details-row">
+              <div class="left-key">Destination Account</div>
+              <div class="left-val center-bold small-muted">{{ res.input.destination_account or '—' }}</div>
+
+              <div class="right-key">Dest. New Balance</div>
+              <div class="right-val right-bold">$ {{ "{:,.0f}".format(res.input.newbalanceDest) }}</div>
+            </div>
+
+            <!-- Divider row -->
+            <div class="details-row details-row--last">
+              <div class="left-key">Date & Time</div>
+              <div class="left-val"></div>
+
+              <div class="right-key"></div>
+              <div class="right-val right-bold">
+                {{ res.selected_datetime.replace("T", " at ") }}
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <div style="height:28px;"></div>
+
+      <div style="text-align:center;">
+        <a href="{{ url_for('index') }}" class="btn primary">← Analyze Another Transaction</a>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- progress animation script (keeps linter happy) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      document.querySelectorAll('.progress-bar-fill').forEach(function(div){
+        let raw = div.getAttribute('data-pct') ?? div.dataset.pct ?? '0';
+        let val = parseFloat(raw);
+        if (isNaN(val)) val = 0;
+        if (val > 0 && val <= 1) val = val * 100;
+        val = Math.max(0, Math.min(100, val));
+        div.style.width = '0%';
+        setTimeout(function(){ div.style.width = val + '%'; }, 60);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "best_threshold": 0.787,
+  "scale_pos_weight": 623.1428571428571,
+  "sklearn_version": "1.5.2",
+  "xgboost_version": "3.1.1",
+  "python_version": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]"
+}

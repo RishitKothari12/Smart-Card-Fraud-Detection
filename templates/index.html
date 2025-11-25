@@ -1,0 +1,166 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Fraud Detection System - AI-Powered Smart Card Security</title>
+  <meta name="description" content="Advanced fraud detection system using machine learning to identify suspicious transactions and protect against smart card fraud in real-time.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="app-wrap">
+
+    <!-- ========================== -->
+    <!--       HERO SECTION         -->
+    <!-- ========================== -->
+    <header class="hero">
+      <div class="hero-inner">
+
+        <!-- Left: Icon -->
+        <div class="hero-icon">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#8b5cf6"/>
+                <stop offset="1" stop-color="#60a5fa"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2l7 3v5c0 5-3.8 9.6-7 12-3.2-2.4-7-7-7-12V5l7-3z"
+                  stroke="url(#g1)" stroke-width="1.4" fill="none"/>
+          </svg>
+        </div>
+
+        <!-- Right: Text -->
+        <div class="hero-text">
+          <h1 class="gradient-text">Smart Card Fraud Detection System</h1>
+          <p class="hero-sub">Advanced machine learning model to detect fraudulent smart card transactions in real-time</p>
+        </div>
+
+      </div>
+    </header>
+
+
+    <!-- ========================== -->
+    <!--        TWO COLUMNS         -->
+    <!-- ========================== -->
+    <div class="two-col-page">
+
+      <!-- LEFT COLUMN — ABOUT INFO -->
+      <aside class="left-col">
+        <div class="panel info">
+          <h2 class="gradient-text">About Smart Card Frauds</h2>
+
+          <p class="muted">
+            Smart card frauds occur when attackers exploit stolen or cloned card details or manipulate
+            transaction flows to illicitly transfer funds. Common patterns:
+          </p>
+
+          <ul>
+            <li><strong>Card skimming/cloning:</strong> Theft of card data for remote transactions.</li>
+            <li><strong>Unauthorized transfers:</strong> Sudden large transfers to new accounts.</li>
+            <li><strong>Rapid sequence attacks:</strong> Multiple quick transactions in a short time.</li>
+            <li><strong>Account takeover:</strong> Unusual changes in account balance patterns.</li>
+          </ul>
+
+          <h3>What is Smart Card Fraud?</h3>
+          <p class="muted">
+          Smart card fraud refers to the unauthorized use or manipulation of smart cards 
+          such as debit cards, credit cards, transit cards, or digital IDs. Even with secure 
+          chip technology, these cards can be compromised through cloning, PIN theft, 
+          tampered readers, or malicious software. Attackers may steal card data using 
+          skimming devices or trick users into revealing sensitive information. Lost or 
+          stolen cards can also be misused if authentication measures are weak. Some 
+          advanced techniques involve intercepting communication between the card and terminal. 
+          Such attacks lead to financial loss, identity theft, and system breaches. 
+          Continuous monitoring and machine learning-based detection help identify 
+          abnormal patterns and prevent fraudulent activity.
+          </p>
+        </div>
+      </aside>
+
+      <!-- RIGHT COLUMN — FORM -->
+      <main class="right-col">
+        <div class="panel">
+          <h2>Enter Transaction Details</h2>
+
+          <form method="post" id="demo-form">
+
+            <!-- Date & Time -->
+            <div class="row">
+              <label>Date
+                <input name="date" type="date" value="{{ defaults.date }}" required />
+              </label>
+
+              <label>Time
+                <input name="time" type="time" value="{{ defaults.time }}" required />
+              </label>
+            </div>
+
+            <!-- Type + Amount -->
+            <div class="row">
+              <label>Transaction Type
+                <select name="type" required>
+                  {% for t in ['PAYMENT','TRANSFER','CASH_OUT','DEBIT','CASH_IN','OTHER'] %}
+                    <option value="{{ t }}" {% if defaults.type == t %}selected{% endif %}>{{ t }}</option>
+                  {% endfor %}
+                </select>
+              </label>
+
+              <label>Amount
+                <input name="amount" type="number" step="0.01" value="{{ defaults.amount }}" required />
+              </label>
+            </div>
+
+            <!-- Origin + Destination account -->
+            <div class="row">
+              <label>Origin Account
+                <input name="origin_account" type="text" placeholder="e.g. C123" value="{{ defaults.origin_account }}" required />
+              </label>
+
+              <label>Destination Account
+                <input name="destination_account" type="text" placeholder="e.g. C45892" value="{{ defaults.destination_account }}" required />
+              </label>
+            </div>
+
+            <!-- Balances -->
+            <div class="row">
+              <label>Origin - Old Balance
+                <input name="oldbalanceOrg" type="number" step="0.01" value="{{ defaults.oldbalanceOrg }}" required />
+              </label>
+
+              <label>Origin - New Balance
+                <input name="newbalanceOrig" type="number" step="0.01" value="{{ defaults.newbalanceOrig }}" required />
+              </label>
+            </div>
+
+            <div class="row">
+              <label>Destination - Old Balance
+                <input name="oldbalanceDest" type="number" step="0.01" value="{{ defaults.oldbalanceDest }}" required />
+              </label>
+
+              <label>Destination - New Balance
+                <input name="newbalanceDest" type="number" step="0.01" value="{{ defaults.newbalanceDest }}" required />
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn primary">Predict Fraud</button>
+              <button type="reset" class="btn muted">Reset</button>
+            </div>
+
+          </form>
+
+        </div>
+      </main>
+    </div>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

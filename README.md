@@ -67,7 +67,7 @@ Smart_Card_Fraud_Detection/
 ```
 ## 🚀 How to Run
 
-```
+
 ### 1️⃣ Clone the repository
 ```bash
 git clone https://github.com/RishitKothari12/Smart-Card-Fraud-Detection.git
@@ -89,3 +89,16 @@ python app.py
 ```
 http://127.0.0.1:5000
 ```
+
+## 🖼️ Screenshots
+
+### Home Page
+![Home Page](assets/home.jpg)
+
+### Prediction Result
+![Result Page](assets/result.jpg)
+
+## 📜 License
+
+This project is licensed under the **MIT License**.  
+You are free to use, modify, and distribute it with proper attribution.
